@@ -87,6 +87,7 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
     </datasources>
     ``` 
 - config postgresql module
+
 ![postgresql](postgresql-module.png)
 
     ```
