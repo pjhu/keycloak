@@ -1,0 +1,39 @@
+version: "3"
+services:
+
+  ldap:
+    image: osixia/openldap:1.2.0
+    container_name: keycloak-ldap
+    ports:
+      - 389:389
+      - 636:636
+    networks:
+      - keycloak
+
+  ldapadmin:
+    image: osixia/phpldapadmin:0.7.1
+    container_name: keycloak-ldapadmin
+    ports:
+      - 8001:80
+      - 6443:443
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldap
+    networks:
+      - keycloak
+    links:
+      - ldap
+
+  postgres:
+    image: postgres:9.6
+    container_name: keycloak-postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=123456
+    networks:
+      - keycloak
+
+networks:
+  keycloak:

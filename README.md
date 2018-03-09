@@ -5,6 +5,13 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
 - create first client: login-app
 - create second client: login-backup
 
+## Setup LDAP
+
+- Run docker
+    ```
+    docker-compose up -d
+    ```
+
 ## Run First Application(rp)
 
 - config keycloak
@@ -22,7 +29,7 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
 
 - build application and run
     ```
-    java -Dserver.port=8081 -jar keycloak81.jar
+    java -Dserver.port=8081 -jar keycloak-login-app.jar
     ```
     
 ## Run Second Application(rp-2)
@@ -42,7 +49,7 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
 
 - build application and run
     ```
-    java -Dserver.port=8082 -jar keycloak82.jar
+    java -Dserver.port=8082 -jar keycloak-login-backup.jar
     ```
 
 ## SSO
@@ -104,3 +111,7 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
         </dependencies>
     </module>
     ```
+
+
+## jianshu
+https://www.jianshu.com/p/c9b1ecd28813
