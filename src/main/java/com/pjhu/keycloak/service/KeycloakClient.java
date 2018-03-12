@@ -26,10 +26,4 @@ public class KeycloakClient {
         ResponseEntity<KeyCloakUser[]> response = template.getForEntity(userUrl, KeyCloakUser[].class);
         return Arrays.stream(response.getBody()).collect(Collectors.toList());
     }
-
-    @PreAuthorize("hasRole('CLIENT_USER')")
-    public ResponseEntity logout() {
-        String userUrl = keycloakAuthServerUrl + "/admin/realms/demo/users/b81efdc3-eec9-4c04-97b4-a54c9c34cd8c/logout";
-        return template.postForEntity(userUrl, null, ResponseEntity.class);
-    }
 }

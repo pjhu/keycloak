@@ -2,7 +2,6 @@ package com.pjhu.keycloak.endpoint;
 
 import com.pjhu.keycloak.service.KeyCloakUser;
 import com.pjhu.keycloak.service.KeycloakClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,13 +26,8 @@ public class controller {
         return keycloakRemoteService.getUsers();
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity logout() {
-        return keycloakRemoteService.logout();
-    }
-
     @GetMapping
     public List<String> home() {
-        return Collections.singletonList("logout");
+        return Collections.singletonList("Home Page");
     }
 }
