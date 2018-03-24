@@ -79,8 +79,8 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
                <max-pool-size>20</max-pool-size>
            </pool>
            <security>
-               <user-name>postgres</user-name>
-               <password>scb123</password>
+               <user-name>keycloak</user-name>
+               <password>123456</password>
            </security>
        </datasource>
         <drivers>

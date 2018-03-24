@@ -14,7 +14,7 @@ services:
     image: osixia/phpldapadmin:0.7.1
     container_name: keycloak-ldapadmin
     ports:
-      - 8001:80
+      - 8280:80
       - 6443:443
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap
@@ -34,6 +34,43 @@ services:
       - POSTGRES_PASSWORD=123456
     networks:
       - keycloak
-
+      
+  kong-migration:
+    image: kong:0.12.3
+    container_name: keycloak-kong-migration
+    environment:
+      - KONG_DATABASE=postgres    
+      - KONG_PG_HOST=postgres 
+      - KONG_PG_DATABASE=kong
+      - KONG_PG_USER=keycloak
+      - KONG_PG_PASSWORD=123456
+    links:
+      - postgres
+    command: kong migrations up
+    networks:
+      - keycloak
+      
+  kong:
+    image: kong:0.12.3
+    container_name: keycloak-kong
+    ports:
+      - 8000:8000
+      - 8443:8443
+      - 8001:8001
+      - 8444:8444
+    environment:
+      - KONG_DATABASE=postgres    
+      - KONG_PG_HOST=postgres 
+      - KONG_PG_DATABASE=kong
+      - KONG_PG_USER=keycloak
+      - KONG_PG_PASSWORD=123456
+      - KONG_ADMIN_LISTEN_SSL=0.0.0.0:8444
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001 
+    links: 
+      - postgres
+      - kong-migration
+    networks:
+      - keycloak
+    
 networks:
   keycloak:
