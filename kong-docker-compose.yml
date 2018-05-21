@@ -1,0 +1,76 @@
+version: "3"
+services:
+
+  ldap:
+    image: osixia/openldap:1.2.0
+    container_name: keycloak-ldap
+    ports:
+      - 389:389
+      - 636:636
+    networks:
+      - keycloak
+
+  ldapadmin:
+    image: osixia/phpldapadmin:0.7.1
+    container_name: keycloak-ldapadmin
+    ports:
+      - 8280:80
+      - 6443:443
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldap
+    networks:
+      - keycloak
+    links:
+      - ldap
+
+  postgres:
+    image: postgres:9.6
+    container_name: keycloak-postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=123456
+    networks:
+      - keycloak
+      
+  kong-migration:
+    image: kong:0.12.3
+    container_name: keycloak-kong-migration
+    environment:
+      - KONG_DATABASE=postgres    
+      - KONG_PG_HOST=postgres 
+      - KONG_PG_DATABASE=kong
+      - KONG_PG_USER=keycloak
+      - KONG_PG_PASSWORD=123456
+    links:
+      - postgres
+    command: kong migrations up
+    networks:
+      - keycloak
+      
+  kong:
+    image: kong:0.12.3
+    container_name: keycloak-kong
+    ports:
+      - 8000:8000
+      - 8443:8443
+      - 8001:8001
+      - 8444:8444
+    environment:
+      - KONG_DATABASE=postgres    
+      - KONG_PG_HOST=postgres 
+      - KONG_PG_DATABASE=kong
+      - KONG_PG_USER=keycloak
+      - KONG_PG_PASSWORD=123456
+      - KONG_ADMIN_LISTEN_SSL=0.0.0.0:8444
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001 
+    links: 
+      - postgres
+      - kong-migration
+    networks:
+      - keycloak
+    
+networks:
+  keycloak:
