@@ -5,7 +5,8 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
 - create first client: login-app
 - create second client: login-backup
 
-## Setup LDAP
+## Setup Keycloak server
+https://github.com/jboss-dockerfiles/keycloak/tree/master/docker-compose-examples
 
 - Run docker
     ```
@@ -59,7 +60,7 @@ https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/top
 ![ldap](ldap.png)
 ![keycloak](keycloak-ldap.png)
 
-## Postgresql
+## Config Postgresql manual
 - change datasource
 
     ```
